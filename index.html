@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Challenge Submission</title>
+<style>
+  .record-form {
+    max-width: 700px;
+    margin: 0 auto;
+    font-family: 'Open Sans', sans-serif;
+    color: #333;
+  }
+  .record-form h2 {
+    text-align: center;
+    font-weight: 700;
+    border-bottom: 2px solid #f26522;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+  .record-section {
+    margin-top: 30px;
+  }
+  label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+  }
+  p.desc {
+    color: #666;
+    font-size: 14px;
+    margin-top: 0;
+  }
+  input, select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #f26522;
+    outline: none;
+    font-size: 15px;
+    background: #fafafa;
+  }
+  input:focus, select:focus {
+    border-bottom-color: #ff7f3f;
+  }
+  button {
+    margin-top: 25px;
+    background: #f26522;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button:hover {
+    background: #ff7f3f;
+  }
+  #status {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #008000;
+  }
+</style>
+</head>
+<body>
+
+<div class="record-form">
+  <h2>Challenge Submission</h2>
+
+  <form id="recordForm">
+    <div class="record-section">
+      <label>Challenge</label>
+      <p class="desc">The challenge submitted. Only top challenges are accepted.</p>
+      <select name="challenge" required>
+        <option value="">Select a challenge</option>
+        <option value="challenge1">challenge1</option>
+        <option value="challenge2">challenge2</option>
+        <option value="challenge3">challenge3</option>
+        <option value="challenge4">challenge4</option>
+        <option value="challenge5">challenge5</option>
+      </select>
+    </div>
+
+    <div class="record-section">
+      <label>Holder</label>
+      <p class="desc">Player name and country.</p>
+      <input type="text" name="holder" placeholder="Name and country..." required>
+    </div>
+
+    <div class="record-section">
+      <label>Progress</label>
+      <p class="desc">Progress made as a percentage (0-100).</p>
+      <input type="number" name="progress" min="0" max="100" placeholder="e.g. 50 or 98" required>
+    </div>
+
+    <div class="record-section">
+      <label>Video</label>
+      <p class="desc">Link to proof video (YouTube URL).</p>
+      <input type="url" name="video" placeholder="https://youtu.be/example" required>
+    </div>
+
+    <button type="submit">Submit Challenge</button>
+  </form>
+
+  <p id="status"></p>
+</div>
+
+<script>
+const form = document.getElementById('recordForm');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const statusEl = document.getElementById('status');
+  statusEl.innerText = 'Submitting...';
+
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbyCf48bPo5nLyYuvPMKoIbxg1oS0VZVSgtawJMGEv-T7NvrpJwJpeUl6soG5xS5yGVxmQ/exec', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) throw new Error('Network response was not OK');
+
+    statusEl.innerText = 'Submission sent to Discord successfully!';
+    form.reset();
+  } catch (err) {
+    statusEl.innerText = 'Submission failed: ' + err.message;
+    console.error(err);
+  }
+});
+</script>
+
+</body>
+</html>
